@@ -76,4 +76,3 @@ while continuar:
     print("Entrada incorrecta. Intente otra vez.")
 
 print("Fin del programa")
-
