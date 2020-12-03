@@ -14,19 +14,33 @@ def select_dir(path):
 
 def search_index(path):
   """ Comprueba si ya existe un indice o no """
-  UBICACION = path
   if platform == "win32":
-    UBICACION += "\index.pickle"
+    path += "\ "
+    path = path[-2::]
   else:
-    UBICACION += "/index.pickle"
+    path += "/"
+  UBICACION = path+"index.pickle"
+  INDEX = None
   
   if os.path.isfile(UBICACION):
-    return UBICACION
-    #INDEX = pickle.load(index.pickle)
+    INDEX = pickle.load(UBICACION)
   else:
-    print("No")
-    #Crear el indice
+    INDEX = create_index(path)
+
+  return INDEX
   
+def create_index(path):
+  CONTENIDOS = os.listdir(path)
+  ARCHIVOS = []
+
+  for fichero in CONTENIDOS:
+    if os.path.isfile(os.path.join(path, fichero)) and ((fichero.endswith('.pdf')) or (fichero.endswith('.txt'))):
+      ARCHIVOS.append(fichero)
+
+  # Crear indice con la lista de ARCHIVOS 
+  
+  INDEX = {}
+  return INDEX
 
 if __name__ == '__main__':
   search_index(os.getcwd())
