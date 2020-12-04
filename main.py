@@ -1,4 +1,4 @@
-from seleccionar import select_dir
+from seleccionar import select_dir, search_index
 from busqueda import search_book
 import os
 
@@ -20,19 +20,11 @@ while continuar:
     if case == "1":
         directory = select_dir(input("Ingrese el directorio: "))
         if directory:
-            print(directory)
-            
-
-        OPC = input("Desea volver al inicio? (s/n): ")
-        if OPC == "s":
-            continue
-        elif OPC == "n":
-            OPC = input("Desea salir del programa? (s/n): ")
-            if OPC == "s":
-                print("Hasta Luego.")
-                break
-            elif OPC == "n":
-                continue
+            index_created = search_index(directory)
+            if index_created:
+                print("El directorio ha sido seleccionado")
+            else:
+                print("Hubo un error con el directorio")
 
     elif case == "2":
         if not os.path.isdir(directory):
@@ -40,24 +32,26 @@ while continuar:
             Intente otra vez despues de ingresar un directorio.''')
             continue
         else:
-            main = os.listdir(directory)
-            for i in range(len(main)):
-                print(main[i])
-            print("Ingrese las palabras a buscar en los documentos: ")
-
-            result = search_book()
-
-            if main:
-                print("Que accion desea realizar?")
-                print("1. Abrir un archivo")
-                print("2. Volver al menu de inicio")
+            if directory:
+                result = search_book()
+                print("""
+                Que accion desea realizar?\n
+                1. Abrir un archivo\n
+                2. Volver al menu de inicio""")
                 OPC = input()
                 if OPC == "1":
-                    print("Por favor, ingrese el indice del archivo que quiera abrir")
-                    file = int(input())
-                    os.startfile(os.path.join(directory, result[file]))
-                elif OPC == "2":
-                    continue
+                  if len(result)==1:
+                        title = result[0]
+                        path = os.path.join(directory, title)
+                        print(path)
+                        os.startfile(path)
+                  if len(result)!=1:    
+                        print("Escriba el indice del libro que desea abrir")
+                        book_index = int(input())
+                        title = result[book_index - 1]
+                        path = os.path.join(directory, title)
+                        print(path)
+                        os.startfile(path)
             else:
                 print("El indice no se ha creado correctamente")
 

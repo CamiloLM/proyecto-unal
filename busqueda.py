@@ -7,12 +7,14 @@ def search_book():
     result = []
     for key in index:
         for words in search:
-            if words in index[key] and len(result) <= 20:
+            if words == set():
+                pass
+            elif words in index[key] and len(result) <= 20:
                 if key not in result:
                     result.append(key)
     if result:
         for i in range(len(result)):
-            print(i, result[i])
+            print(i+1, result[i])
         return result
     else:
         print("No se encontro ningun libro")
