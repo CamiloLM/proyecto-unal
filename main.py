@@ -21,6 +21,7 @@ while continuar:
         directory = select_dir(input("Ingrese el directorio: "))
         if directory:
             print(directory)
+            
 
         OPC = input("Desea volver al inicio? (s/n): ")
         if OPC == "s":
@@ -34,27 +35,31 @@ while continuar:
                 continue
 
     elif case == "2":
-        if directory == " ":
-            print("No se ha seleccionado un directorio. Intente otra vez despues de ingresar un directorio.")
+        if not os.path.isdir(directory):
+            print('''No se ha seleccionado un directorio.
+            Intente otra vez despues de ingresar un directorio.''')
             continue
         else:
+            main = os.listdir(directory)
+            for i in range(len(main)):
+                print(main[i])
             print("Ingrese las palabras a buscar en los documentos: ")
 
-        result = search_book(directory)
+            result = search_book()
 
-        if result:
-            print("Que accion desea realizar?")
-            print("1. Abrir un archivo")
-            print("2. Volver al menu de inicio")
-            OPC = input()
-            if OPC == "1":
-                print("Por favor, ingrese el indice del archivo que quiera abrir")
-                file = int(input())
-                os.startfile(os.path.join(directory, result[file]))
-            elif OPC == "2":
-                continue
-        else:
-            print("El indice no se ha creado correactamente")
+            if main:
+                print("Que accion desea realizar?")
+                print("1. Abrir un archivo")
+                print("2. Volver al menu de inicio")
+                OPC = input()
+                if OPC == "1":
+                    print("Por favor, ingrese el indice del archivo que quiera abrir")
+                    file = int(input())
+                    os.startfile(os.path.join(directory, result[file]))
+                elif OPC == "2":
+                    continue
+            else:
+                print("El indice no se ha creado correctamente")
 
     elif case == "3":
         print("""
