@@ -1,6 +1,6 @@
 # Proyecto Buscador Unal
 
-_Este motor de busqueda forma parte del proyecto final del curso Programación de computadores 2020-2 de la Univerdiad Nacional de Colombia._
+_Este motor de busqueda forma parte del proyecto final del curso Programación de computadores 2020-2 de la Universidad Nacional de Colombia._
 
 ### Pre-requisitos 📋
 
