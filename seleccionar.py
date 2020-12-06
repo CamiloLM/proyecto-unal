@@ -1,58 +1,33 @@
-import os
-import pickle
+from os import path, chdir, listdir
+from pickle import dump
 import fitz
 
 
-def select_dir(path):
+def select_dir(dir_path):
     """ Cambia el directorio a la direccion ingresada"""
-    if os.path.isdir(path):
-        os.chdir(path)
-        return os.getcwd()
+    if path.isdir(dir_path):
+        chdir(dir_path)
+        return True
     else:
         print("El directorio no existe.")
         return False
 
 
-def search_index(path):
+def search_index(dir_path):
     """ Comprueba si ya existe un indice o no """
     index_created = False
-    test = os.path.join(path, "index.pickle")
-    print(path, test)
+    index_path = path.join(dir_path, "index.pickle")
 
-    if os.path.isfile(test):
+    if path.isfile(index_path):
         index_created = True
     else:
-        create_index(path,test)
+        create_index(dir_path, index_path)
         index_created = True
     return index_created
 
 
-def create_index(path, test):
-    content = os.listdir(path)
-    files = []
-
-    for file in content:
-        if (os.path.isfile(os.path.join(path, file))) and (file.endswith('.pdf') or file.endswith('.txt')):
-            files.append(file)
-
-    index = {}
-
-    for file in files:
-        if file.endswith('.txt'):
-            words = words_txt(os.path.join(path, file))
-            index[file] = words
-        elif file.endswith('.pdf'):
-            words = words_pdf(os.path.join(path, file))
-            index[file] = words
-            pass
-
-    fichero = open(test, "wb")
-    pickle.dump(index, fichero)
-    fichero.close()
-    del(index)
-
-
 def words_txt(file_path):
+    """Crea un conjunto con el contenido de un archivo txt"""
     words = set()
     try:
         with open(file_path, "r") as f:
@@ -61,9 +36,9 @@ def words_txt(file_path):
                     for word in line.split():
                         word = word.lower()
                         word = word.strip(".,:;-—¿?'()«»¡!")
-                        if not word.isnumeric():
+                        if word.isalpha():
                             a,b = 'áéíóúü','aeiouu'
-                            for i in range(len(a)):
+                            for i in range(6):
                                 if a[i] in word:
                                     word = word.replace(a[i], b[i])
                             if len(word) > 1:
@@ -73,20 +48,18 @@ def words_txt(file_path):
     return words
 
 
-  ###busca una palabra especifica en todos los PDF###
-
-
 def words_pdf(filepath):
+    """Crea un conjunto con el contenido de un archivo pdf"""
     words = set()
-    with fitz.open(filepath ) as doc:
+    with fitz.open(filepath) as doc:
         for page in doc:
             page_words = page.getText().split()
             for word in page_words:
                 word = word.lower()
                 word = word.strip(".,:;-—¿?'()«»¡!")
-                if not word.isnumeric():
+                if word.isalpha():
                     a, b = 'áéíóúü', 'aeiouu'
-                    for i in range(len(a)):
+                    for i in range(6):
                         if a[i] in word:
                             word = word.replace(a[i], b[i])
                     if len(word) > 1:
@@ -94,6 +67,26 @@ def words_pdf(filepath):
     return words
 
 
+def create_index(dir_path, index_path):
+    """Crea un indice inverso con el contenido de los libros"""
+    content = listdir(dir_path)
+    files = []
 
-if __name__ == '__main__':
-    pass
+    for file in content:
+        if (path.isfile(path.join(dir_path, file))) and (file.endswith('.pdf') or file.endswith('.txt')):
+            files.append(file)
+
+    index = {}
+
+    for file in files:
+        if file.endswith('.txt'):
+            words = words_txt(path.join(dir_path, file))
+            index[file] = words
+        elif file.endswith('.pdf'):
+            words = words_pdf(path.join(dir_path, file))
+            index[file] = words
+            pass
+
+    with open(index_path, "wb") as f:
+        dump(index, f)
+    del(index)
