@@ -1,6 +1,7 @@
-venv/
 .replit
 poetry.lock
 pyproject.toml
 .idea
+Pipfile
+Pipfile.lock
 __pycache__

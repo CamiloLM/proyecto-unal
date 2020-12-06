@@ -2,44 +2,41 @@ from seleccionar import select_dir, search_index
 from busqueda import search_book
 from os import getcwd
 
-continuar = True
-print('Inicio del programa')
-
+print("Bienvenido al Motor De Busqueda.")
 directory = False
 
-while continuar:
-    print("""
-        Bienvenido al Motor De Busqueda. \n
-        Seleccione la opcion que desea seleccionar: \n
-        \t 1. Ingresar directorio de busqueda.
-        \t 2. Realizar una busqueda.
-        \t 3. Creditos.
-        \t 4. Salir del programa.\n""")
+while True:
+    print("Seleccione la opcion que desea seleccionar:")
+    print("\t1. Ingresar directorio de busqueda.")
+    print("\t2. Realizar una busqueda.")
+    print("\t3. Creditos.")
+    print("\t4. Salir del programa.")
     case = input()
 
     if case == "1":
-        print("Ingrese la ruta del directorio:")
+        print("Ingrese la ruta del directorio que desea usar:")
         directory = select_dir(input())
 
         if directory:
             index_created = search_index(getcwd())
             if index_created:
-                print("El directorio ha sido seleccionado")
+                print("El directorio se ha seleccionado correctamente\n")
             else:
                 print("Hubo un error con el directorio")
 
     elif case == "2":
         if not directory:
-            print("""No se ha seleccionado un directorio.
-            Intente otra vez despues de ingresar un directorio.""")
+            print("No se ha seleccionado un directorio.")
+            print("Intente otra vez despues de ingresar un directorio.")
         else:
             search_book()
 
     elif case == "3":
-        print("""Este programa fue desarrollado por: 
-            \t Maria Jose Jara Herrera.
-            \t Camilo Londoño Moreno.
-            \t Sergio Alexander Parada Amarillo.\n""")
+        print("Este programa fue desarrollado por:")
+        print("\tMaria Jose Jara Herrera.")
+        print("\tCamilo Londoño Moreno.")
+        print("\tSergio Alexander Parada Amarillo.")
+        print()
 
     elif case == "4":
         print("Hasta Luego.")
@@ -47,5 +44,3 @@ while continuar:
 
     else:
         print("Entrada incorrecta. Intente otra vez.")
-
-print("Fin del programa")

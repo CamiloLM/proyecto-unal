@@ -15,15 +15,13 @@ def select_dir(dir_path):
 
 def search_index(dir_path):
     """ Comprueba si ya existe un indice o no """
-    index_created = False
     index_path = path.join(dir_path, "index.pickle")
 
     if path.isfile(index_path):
-        index_created = True
+        return True
     else:
         create_index(dir_path, index_path)
-        index_created = True
-    return index_created
+        return True
 
 
 def words_txt(file_path):
@@ -32,17 +30,16 @@ def words_txt(file_path):
     try:
         with open(file_path, "r") as f:
             for line in f:
-                for line in f:
-                    for word in line.split():
-                        word = word.lower()
-                        word = word.strip(".,:;-—¿?'()«»¡!")
-                        if word.isalpha():
-                            a,b = 'áéíóúü','aeiouu'
-                            for i in range(6):
-                                if a[i] in word:
-                                    word = word.replace(a[i], b[i])
-                            if len(word) > 1:
-                                words.add(word)
+                for word in line.split():
+                    word = word.lower()
+                    word = word.strip(".,:;-—¿?'()«»¡!")
+                    if word.isalpha():
+                        a, b = "áéíóúü", "aeiouu"
+                        for i in range(6):
+                            if a[i] in word:
+                                word = word.replace(a[i], b[i])
+                        if len(word) > 1:
+                            words.add(word)
     except UnicodeDecodeError:
         print("Hay un error en el archivo", file_path)
     return words
@@ -77,6 +74,7 @@ def create_index(dir_path, index_path):
             files.append(file)
 
     index = {}
+    print("Por favor, espere un momento...")
 
     for file in files:
         if file.endswith('.txt'):
@@ -89,4 +87,4 @@ def create_index(dir_path, index_path):
 
     with open(index_path, "wb") as f:
         dump(index, f)
-    del(index)
+    del index
