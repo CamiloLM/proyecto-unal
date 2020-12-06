@@ -1,8 +1,11 @@
 from seleccionar import select_dir, search_index
 from busqueda import search_book
 from os import getcwd
+from time import sleep
 
-print("Bienvenido al Motor De Busqueda.")
+print("╔" + "═"*34 + "╗")
+print("║ Bienvenido al Motor de Busqueda. ║")
+print("╚" + "═"*34 + "╝\n")
 directory = False
 
 while True:
@@ -40,6 +43,7 @@ while True:
 
     elif case == "4":
         print("Hasta Luego.")
+        sleep(1)
         break
 
     else:
