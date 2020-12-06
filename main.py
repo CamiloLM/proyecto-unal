@@ -9,7 +9,7 @@ print("╚" + "═"*34 + "╝\n")
 directory = False
 
 while True:
-    print("Seleccione la opcion que desea seleccionar:")
+    print("Seleccione la opcion que desea realizar:")
     print("\t1. Ingresar directorio de busqueda.")
     print("\t2. Realizar una busqueda.")
     print("\t3. Creditos.")
